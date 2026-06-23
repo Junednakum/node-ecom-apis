@@ -5,6 +5,7 @@ import UnauthorizedError from '../errors/UnauthorizedError.js';
 import { hashPassword, comparePassword } from '../utils/hash.js';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/token.js';
 import getTemplate from '../services/email.service.js';
+import UserResource from '../resources/user.resource.js';
 
 class AuthService {
   async register(userData) {
@@ -64,14 +65,9 @@ class AuthService {
     const refreshToken = generateRefreshToken(user);
 
     await userRepository.updateRefreshToken(user.id, refreshToken);
-
+    const userData = UserResource.transform(user);
     return {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      user: userData,
       accessToken,
       refreshToken,
     };

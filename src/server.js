@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import app from './app.js';
+import './jobs/sample.job.js';
 
 // Handle Uncaught Exceptions
 process.on('uncaughtException', (err) => {
@@ -11,8 +12,8 @@ process.on('uncaughtException', (err) => {
 // Configure env variables
 dotenv.config();
 
-const port = process.env.PORT || 5000;
-
+const port = process.env.PORT;
+console.log(process.env.PORT);
 const server = app.listen(port, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${port}`);
   console.log(`Swagger Documentation available at http://localhost:${port}/api-docs`);
