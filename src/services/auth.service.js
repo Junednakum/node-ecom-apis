@@ -6,6 +6,7 @@ import { hashPassword, comparePassword } from '../utils/hash.js';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/token.js';
 import getTemplate from '../services/email.service.js';
 import UserResource from '../resources/user.resource.js';
+import { emailQueue } from '../queues/email.queue.js';
 
 class AuthService {
   async register(userData) {
@@ -32,7 +33,18 @@ class AuthService {
       email: user.email,
     });
 
-    await sendEmail({
+    // await sendEmail({
+    //   to: user.email,
+    //   subject: 'Account Created',
+    //   html,
+    // });
+
+    // await emailQueue.add('send-email', {
+    //   email: 'test@gmail.com',
+    //   name: 'John'
+    // });
+
+    await emailQueue.add('send-email', {
       to: user.email,
       subject: 'Account Created',
       html,
